@@ -4,6 +4,7 @@
 #include <curl/curl.h>
 #include <string>
 #include "http/HttpClient.h"
+#include "order-managment/OrderManager.h"
 #include <nlohmann/json.hpp>
 
 using namespace std;
@@ -13,6 +14,7 @@ void displayOptions()
 {
     vector<string> actions = {
         "Place Order",
+        "Get Open Orders",
         "Cancel Order",
         "Modify Order",
         "Get Order Book",
@@ -70,6 +72,44 @@ string getAccessToken(const char *clientId, const char *clientSecret)
     return "";
 }
 
+void getOpenOrders(const string &access_token)
+{
+    string url = "https://test.deribit.com/api/v2/private/get_open_orders";
+    string jsonPayload = "{\"jsonrpc\": \"2.0\", "
+                         "\"id\": 1, "
+                         "\"method\": \"private/get_open_orders\", "
+                         "\"params\": {"
+                         "}}";
+
+    vector<string> headers = {"Authorization: Bearer " + access_token, "Content-Type: application/json"};
+    HttpClient httpClient;
+    string response = httpClient.sendHttpPost(url, jsonPayload, headers);
+    try
+    {
+        auto jsonResponse = json::parse(response);
+        if (jsonResponse.contains("result")){
+            cout << "\nOpen Orders: \n";
+            cout << string(40, '-') << endl;
+            for (auto &order : jsonResponse["result"]){
+                cout << "Order ID: " << order["order_id"] << endl;
+                cout << "Instrument Name: " << order["instrument_name"] << endl;
+                cout << "Direction: " << order["direction"] << endl;
+                cout << "Amount: " << order["amount"] << endl;
+                cout << string(40, '-') << endl;
+
+            }
+        }
+        else
+        {
+            cerr << "Error : faild with error msg :" << jsonResponse["error"]["message"] << "\n";
+        }
+    }
+    catch (const std::exception &e)
+    {
+        cerr << "JSON parsing error: " << e.what() << "\n";
+    }
+}
+
 int main()
 {
 
@@ -78,12 +118,12 @@ int main()
 
     if (!clientId || !clientSecret)
     {
-        cout << "Please set CLIENT_ID and CLIENT_SECRET environment variables\n";
+        cout << "set CLIENT_ID and CLIENT_SECRET environment variables\n";
         return 1;
     }
 
     int choice = 0;
-    string accessToken = getAccessToken(clientId, clientSecret);
+    const string accessToken = getAccessToken(clientId, clientSecret);
     if (accessToken.empty())
     {
         cerr << "Error retrieving access token. Exiting...\n";
@@ -93,29 +133,32 @@ int main()
     while (choice != 8)
     {
 
-        cout << "\nPlease Enter your choice: \n";
+        cout << "\nEnter your choice: ";
         cin >> choice;
         switch (choice)
         {
         case 1:
-            cout << "Place Order\n";
+            createOrder(accessToken);
             break;
         case 2:
-            cout << "Cancel Order\n";
+            getOpenOrders(accessToken);
             break;
         case 3:
-            cout << "Modify Order\n";
+            cencelOrder(accessToken);
             break;
         case 4:
-            cout << "Get Order Book\n";
+            modifyOrder(accessToken);
             break;
         case 5:
-            cout << "View Current Positions\n";
+            cout << "Get Order Book\n";
             break;
         case 6:
-            cout << "Subscribe to symbols\n";
+            cout << "View Current Positions\n";
             break;
         case 7:
+            cout << "Subscribe to symbols\n";
+            break;
+        case 8:
             cout << "Stream subscribed symbols\n";
             break;
         default:
