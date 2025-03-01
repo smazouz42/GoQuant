@@ -79,13 +79,13 @@ Then, run the executable:
 Usage
 When you run the project, you will see a menu with the following options:
 
-Place Order
-Get Open Orders
-Cancel Order
-Modify Order
-Get Order Book
-View Current Positions
-Subscribe to symbols
+1. Place Order
+2. Get Open Orders
+3. Cancel Order
+4. Modify Order
+5. Get Order Book
+6. View Current Positions
+7. Subscribe to symbols
 
 Enter the number corresponding to the action you want to perform and follow the prompts.
 
