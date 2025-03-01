@@ -6,11 +6,20 @@
 #include "http/HttpClient.h"
 #include "order-managment/OrderManager.h"
 #include <nlohmann/json.hpp>
+#include <iomanip>
+#include "order-managment/OrderQueries.h"
+#include <websocketpp/config/asio_client.hpp>
+#include <websocketpp/client.hpp>
+#include <boost/asio/ssl/context.hpp>
+#include "market-data/MarketDataStreamer.h"
 
 using namespace std;
 using json = nlohmann::json;
 
+MarketDataStreamer marketDataStreamer;
+
 void displayOptions()
+
 {
     vector<string> actions = {
         "Place Order",
@@ -23,7 +32,7 @@ void displayOptions()
         "Stream subscribed symbols"};
 
     cout << "\nPlease select an action:\n";
-    for (int i = 0; i < actions.size(); ++i)
+    for (size_t i = 0; i < actions.size(); ++i)
     {
         cout << (i + 1) << ". " << actions[i] << "\n";
     }
@@ -72,55 +81,35 @@ string getAccessToken(const char *clientId, const char *clientSecret)
     return "";
 }
 
-void getOpenOrders(const string &access_token)
+void welcomeMessage()
 {
-    string url = "https://test.deribit.com/api/v2/private/get_open_orders";
-    string jsonPayload = "{\"jsonrpc\": \"2.0\", "
-                         "\"id\": 1, "
-                         "\"method\": \"private/get_open_orders\", "
-                         "\"params\": {"
-                         "}}";
+    cout << string(45, '-') << "\n";
+    cout << "| Welcome to Deribit API client application |\n";
+    cout << string(45, '-') << "\n";
+}
 
-    vector<string> headers = {"Authorization: Bearer " + access_token, "Content-Type: application/json"};
-    HttpClient httpClient;
-    string response = httpClient.sendHttpPost(url, jsonPayload, headers);
-    try
-    {
-        auto jsonResponse = json::parse(response);
-        if (jsonResponse.contains("result")){
-            cout << "\nOpen Orders: \n";
-            cout << string(40, '-') << endl;
-            for (auto &order : jsonResponse["result"]){
-                cout << "Order ID: " << order["order_id"] << endl;
-                cout << "Instrument Name: " << order["instrument_name"] << endl;
-                cout << "Direction: " << order["direction"] << endl;
-                cout << "Amount: " << order["amount"] << endl;
-                cout << string(40, '-') << endl;
-
-            }
-        }
-        else
-        {
-            cerr << "Error : faild with error msg :" << jsonResponse["error"]["message"] << "\n";
-        }
-    }
-    catch (const std::exception &e)
-    {
-        cerr << "JSON parsing error: " << e.what() << "\n";
-    }
+void subscribeSymbols(const string &access_token)
+{
+    string symbol;
+    cout << "Enter symbol to subscribe: ";
+    cin >> symbol;
+    marketDataStreamer.subscribe_orderbook(symbol);
 }
 
 int main()
 {
-
     const char *clientId = getenv("CLIENT_ID");
     const char *clientSecret = getenv("CLIENT_SECRET");
+
+    string ws_connection_url = "wss://test.deribit.com/ws/api/v2";
+
 
     if (!clientId || !clientSecret)
     {
         cout << "set CLIENT_ID and CLIENT_SECRET environment variables\n";
         return 1;
     }
+    marketDataStreamer.connect(ws_connection_url);
 
     int choice = 0;
     const string accessToken = getAccessToken(clientId, clientSecret);
@@ -129,10 +118,10 @@ int main()
         cerr << "Error retrieving access token. Exiting...\n";
         return 1;
     }
-    displayOptions();
+    welcomeMessage();
     while (choice != 8)
     {
-
+        displayOptions();
         cout << "\nEnter your choice: ";
         cin >> choice;
         switch (choice)
@@ -150,16 +139,13 @@ int main()
             modifyOrder(accessToken);
             break;
         case 5:
-            cout << "Get Order Book\n";
+            getOrderBook(accessToken);
             break;
         case 6:
-            cout << "View Current Positions\n";
+            viewCurrentPositions(accessToken);
             break;
         case 7:
-            cout << "Subscribe to symbols\n";
-            break;
-        case 8:
-            cout << "Stream subscribed symbols\n";
+            subscribeSymbols(accessToken);
             break;
         default:
             cout << "Invalid choice. Please try again.\n";
