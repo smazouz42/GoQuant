@@ -17,9 +17,10 @@ using namespace std;
 using json = nlohmann::json;
 
 MarketDataStreamer marketDataStreamer;
+string ws_connection_url = "wss://test.deribit.com/ws/api/v2";
+
 
 void displayOptions()
-
 {
     vector<string> actions = {
         "Place Order",
@@ -55,7 +56,7 @@ string getAccessToken(const char *clientId, const char *clientSecret)
                                                 "}}";
 
     vector<string> headers = {"Content-Type: application/json"};
-    string response = httpClient.sendHttpPost(url, jsonPayload, headers);
+    string response = httpClient.sendRequest (url, jsonPayload, headers);
     if (response.empty())
     {
         cerr << "Error retrieving access token." << endl;
@@ -100,9 +101,6 @@ int main()
 {
     const char *clientId = getenv("CLIENT_ID");
     const char *clientSecret = getenv("CLIENT_SECRET");
-
-    string ws_connection_url = "wss://test.deribit.com/ws/api/v2";
-
 
     if (!clientId || !clientSecret)
     {

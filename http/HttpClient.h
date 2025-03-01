@@ -12,7 +12,7 @@ class HttpClient {
 public:
     HttpClient();
     ~HttpClient();
-    string sendHttpPost(const string &url, const string &jsonPayload, const vector<string> &headers);
+    string sendRequest (const string &url, const string &jsonPayload, const vector<string> &headers);
 
 private:
     CURL *curl;

@@ -17,7 +17,7 @@ void getOpenOrders(const string &access_token)
 
     vector<string> headers = {"Authorization: Bearer " + access_token, "Content-Type: application/json"};
     HttpClient httpClient;
-    string response = httpClient.sendHttpPost(url, jsonPayload, headers);
+    string response = httpClient.sendRequest (url, jsonPayload, headers);
     try
     {
         auto jsonResponse = json::parse(response);
@@ -68,7 +68,7 @@ void getOrderBook(const string &access_token)
     HttpClient httpClient;
     
     vector<string> headers = {"Authorization: Bearer " + access_token, "Content-Type: application/json"};
-    string response = httpClient.sendHttpPost(url, payload, headers);
+    string response = httpClient.sendRequest (url, payload, headers);
     cout << response << endl;
     try
     {
@@ -119,7 +119,7 @@ void viewCurrentPositions(const string &access_token)
 
     vector<string> headers = {"Authorization: Bearer " + access_token, "Content-Type: application/json"};
     HttpClient httpClient;
-    string response = httpClient.sendHttpPost(url, jsonPayload, headers);
+    string response = httpClient.sendRequest (url, jsonPayload, headers);
     try
     {
         auto jsonResponse = json::parse(response);

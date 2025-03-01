@@ -41,7 +41,7 @@ void createOrder(const string &access_token)
     string url = "https://test.deribit.com/api/v2/" + methodName;
     vector<string> headers = {"Authorization: Bearer " + access_token, "Content-Type: application/json"};
     HttpClient httpClient;
-    string response = httpClient.sendHttpPost(url, orderRequest, headers);
+    string response = httpClient.sendRequest (url, orderRequest, headers);
     try
     {
         auto jsonResponse = json::parse(response);
@@ -86,7 +86,7 @@ void cencelOrder(const string &access_token)
 
     vector<string> headers = {"Authorization: Bearer " + access_token, "Content-Type: application/json"};
     HttpClient httpClient;
-    string response = httpClient.sendHttpPost(url, jsonPayload, headers);
+    string response = httpClient.sendRequest (url, jsonPayload, headers);
 
     try
     {
@@ -134,7 +134,7 @@ void modifyOrder(const string &access_token)
 
     vector<string> headers = {"Authorization: Bearer " + access_token, "Content-Type: application/json"};
     HttpClient httpClient;
-    string response = httpClient.sendHttpPost(url, jsonPayload, headers);
+    string response = httpClient.sendRequest (url, jsonPayload, headers);
 
     try
     {

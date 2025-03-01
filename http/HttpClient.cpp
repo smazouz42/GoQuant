@@ -8,7 +8,7 @@ HttpClient::~HttpClient() {
     curl_easy_cleanup(curl);
 }
 
-string HttpClient::sendHttpPost(const string &url, const string &jsonPayload, const vector<string> &headers) {
+string HttpClient::sendRequest (const string &url, const string &jsonPayload, const vector<string> &headers) {
     string response;
     if(curl) {
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
@@ -31,7 +31,7 @@ string HttpClient::sendHttpPost(const string &url, const string &jsonPayload, co
     }
     else
     {
-        cerr << "Failed to initialize curl in sendHttpPost.\n";
+        cerr << "Failed to initialize curl in sendRequest .\n";
     }
     return response;
 }
