@@ -15,40 +15,40 @@ To build and run this project, you need the following libraries:
 cURL is used for making HTTP requests. You can install it using the following commands:
 
 - On Ubuntu/Debian:
-  ```sh
+```sh
   sudo apt-get update
   sudo apt-get install libcurl4-openssl-dev
 ```
 - On macOS:
-  ```sh
+```sh
   brew install curl
-  ```
+```
 
 #### nlohmann/json
 
 nlohmann/json is a header-only library, so you just need to include the header file in your project. You can download it from the GitHub repository or install it using a package manager:
 
 - On Ubuntu/Debian:
-  ```sh
+```sh
   sudo apt-get update
   sudo apt-get install nlohmann-json-dev
 ```
 - On macOS:
-  ```sh
+```sh
   brew install nlohmann-json
-  ```
+```
 
 #### Boost
 
 WebSocket++ is used for WebSocket communication. You can install it using the following commandsBoost is used for various functionalities including WebSocket communication. You can install it using the following commands:
 
 - On Ubuntu/Debian:
-  ```sh
+```sh
   sudo apt-get update
   sudo apt-get install libboost-all-dev
 ```
 - On macOS:
-  ```sh
+```sh
   brew install boost
 ```
 ## Building the Project
@@ -88,4 +88,3 @@ When you run the project, you will see a menu with the following options:
 7. Subscribe to symbols
 
 Enter the number corresponding to the action you want to perform and follow the prompts.
-
