@@ -7,6 +7,8 @@ To build and run this project, you need the following libraries:
 1. **cURL**: A library for transferring data with URLs.
 2. **nlohmann/json**: A JSON library for modern C++.
 3. **WebSocket++**: A C++ library for WebSocket client and server applications.
+4. **WebSocket++**: A C++ library for WebSocket client and server applications.
+
 
 ### Installation Instructions
 
@@ -36,6 +38,14 @@ nlohmann/json is a header-only library, so you just need to include the header f
 - On macOS:
 ```sh
   brew install nlohmann-json
+```
+#### WebSocket++
+
+WebSocket++ is used for WebSocket communication. You need to clone the repository and include it in your project Dir:
+
+- Clone the repository:
+```sh
+  git clone https://github.com/zaphoyd/websocketpp.git
 ```
 
 #### Boost
