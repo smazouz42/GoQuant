@@ -25,7 +25,7 @@ string HttpClient::sendRequest (const string &url, const string &jsonPayload, co
 
         CURLcode res = curl_easy_perform(curl);
         if(res != CURLE_OK) {
-            cerr << "Failed to send HTTP POST request: " << curl_easy_strerror(res) << endl;
+            cerr << "Failed to send HTTP request: " << curl_easy_strerror(res) << endl;
         }
         curl_slist_free_all(headerList);
     }

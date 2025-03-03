@@ -51,7 +51,7 @@ void createOrder(const string &access_token)
             auto order = jsonResponse["result"]["order"];
             if (order.contains("order_id"))
             {
-                cout << "Order ID: " << order["order_id"] << endl;
+                cout << "Order added successfully with ID: " << order["order_id"] << "\n";
             }
             else
             {

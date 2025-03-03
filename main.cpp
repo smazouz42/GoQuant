@@ -21,7 +21,7 @@ using json = nlohmann::json;
 MarketDataStreamer marketDataStreamer;
 string ws_connection_url = "wss://test.deribit.com/ws/api/v2";
 
-void subscribeSymbols(const string &access_token)
+void subscribeSymbols()
 {
     string symbol;
     cout << "Enter symbol to subscribe: ";
@@ -75,7 +75,7 @@ int main()
             viewCurrentPositions(accessToken);
             break;
         case 7:
-            subscribeSymbols(accessToken);
+            subscribeSymbols();
             break;
         default:
             cout << "Invalid choice. Please try again.\n";

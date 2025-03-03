@@ -50,8 +50,7 @@ WebSocket++ is used for WebSocket communication. You need to clone the repositor
 
 #### Boost
 
-WebSocket++ is used for WebSocket communication. You can install it using the following commandsBoost is used for various functionalities including WebSocket communication. You can install it using the following commands:
-
+Boost is used for various functionalities including WebSocket communication. You can install it using the following commands:
 - On Ubuntu/Debian:
 ```sh
   sudo apt-get update

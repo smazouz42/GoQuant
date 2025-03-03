@@ -50,10 +50,10 @@ string getAccessToken(const char *clientId, const char *clientSecret)
     }
     try
     {
-        auto j = json::parse(response);
-        if (j.contains("result") && j["result"].contains("access_token"))
+        auto js = json::parse(response);
+        if (js.contains("result") && js["result"].contains("access_token"))
         {
-            return j["result"]["access_token"];
+            return js["result"]["access_token"];
         }
         else
         {
@@ -67,9 +67,10 @@ string getAccessToken(const char *clientId, const char *clientSecret)
     }
     return "";
 }
-
+#include <unistd.h> 
 void welcomeMessage()
 {
+    usleep(1000000);
     cout << string(45, '-') << "\n";
     cout << "| Welcome to Deribit API client application |\n";
     cout << string(45, '-') << "\n";
